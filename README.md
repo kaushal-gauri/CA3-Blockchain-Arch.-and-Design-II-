@@ -79,16 +79,16 @@ ________________________________________
 
 **1.	Order of Operations:**
 
-	The user’s balance in the balances mapping is set to 0 before making the external call. This prevents any recursive calls from accessing the previous balance.
+:The user’s balance in the balances mapping is set to 0 before making the external call. This prevents any recursive calls from accessing the previous balance.
  
 **2.	Reentrancy Mitigation:**
    
-	By resetting the balance before interacting with msg.sender, any recursive call would see the balance as 0, preventing further withdrawals.
+:By resetting the balance before interacting with msg.sender, any recursive call would see the balance as 0, preventing further withdrawals.
 
 **3.	Additional Safety:**
 
-	Added a check (require(amount > 0)) to **ensure the user has a non-zero balance before proceeding.**
-	Retained the require(success) check to **ensure the transfer completes successfully.**
+:Added a check (require(amount > 0)) to **ensure the user has a non-zero balance before proceeding.**
+:Retained the require(success) check to **ensure the transfer completes successfully.**
 ________________________________________
 
 **Additional Recommendations:**
