@@ -5,16 +5,15 @@
 **Original Code :**
 
 
-function withdraw() external 
-{
-     uint256 amount = balances[msg.sender];
+    function withdraw() external 
+
+    {  uint256 amount = balances[msg.sender];
     
     (bool success,) = msg.sender.call{value: balances[msg.sender]}("");
     
     require(success);
     
-    balances[msg.sender] = 0;
-}
+    balances[msg.sender] = 0;}
 
 Imagine you are doing a manual audit and you come across above code. Write a comprehensive report explaining the issue and the fix for the issue.
 
