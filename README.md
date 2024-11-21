@@ -96,11 +96,11 @@ ________________________________________
 
 1.	Use ReentrancyGuard: Consider using OpenZeppelin's ReentrancyGuard to add a layer of protection against reentrancy attacks:
 
-    import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+        import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-    contract MyContract is ReentrancyGuard {
+        contract MyContract is ReentrancyGuard {
 
-    function withdraw() external nonReentrant {
+        function withdraw() external nonReentrant {
     
         uint256 amount = balances[msg.sender];
   	
@@ -111,10 +111,11 @@ ________________________________________
         (bool success, ) = msg.sender.call{value: amount}("");
   	
         require(success, "Transfer failed");
-    }
-}
+        }
 
-2.	Audit the Use of call:
+  	    }
+
+3.	Audit the Use of call:
    
 Low-level call can introduce additional risks if not handled properly. Consider using transfer or send for transferring Ether where possible. However, note that transfer has a 2300 gas stipend limit which might not be suitable in all cases.
 
