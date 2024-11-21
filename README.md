@@ -62,17 +62,18 @@ ________________________________________
 
 **Revised Code:**
 
-function withdraw() external {
+    function withdraw() external {
+    
     uint256 amount = balances[msg.sender];
+    
     require(amount > 0, "Insufficient balance");
+    
+    balances[msg.sender] = 0;//Update state
 
-    // **Update state before interaction**
-    balances[msg.sender] = 0;
-
-    // **Transfer funds**
-    (bool success, ) = msg.sender.call{value: amount}("");
+    (bool success, ) = msg.sender.call{value: amount}(""); // Transfer funds
+    
     require(success, "Transfer failed");
-}
+    }
 
 ________________________________________
 **Explanation of Fix:**
@@ -95,21 +96,27 @@ ________________________________________
 
 1.	Use ReentrancyGuard: Consider using OpenZeppelin's ReentrancyGuard to add a layer of protection against reentrancy attacks:
 
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+    import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract MyContract is ReentrancyGuard {
+    contract MyContract is ReentrancyGuard {
+
     function withdraw() external nonReentrant {
+    
         uint256 amount = balances[msg.sender];
+  	
         require(amount > 0, "Insufficient balance");
+  	
         balances[msg.sender] = 0;
+  	
         (bool success, ) = msg.sender.call{value: amount}("");
+  	
         require(success, "Transfer failed");
     }
 }
 
 2.	Audit the Use of call:
    
-	Low-level call can introduce additional risks if not handled properly. Consider using transfer or send for transferring Ether where possible. However, note that transfer has a 2300 gas stipend limit which might not be suitable in all cases.
+Low-level call can introduce additional risks if not handled properly. Consider using transfer or send for transferring Ether where possible. However, note that transfer has a 2300 gas stipend limit which might not be suitable in all cases.
 
 3.	Implement Regular code audits
 ________________________________________
